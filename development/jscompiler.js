@@ -44,7 +44,7 @@ function jscompiler(config) {
             plugins: [
                 resolve({
                     mainFields: ['module', 'main'],
-                    browser: true,
+                    browser: true
                 }),
                 commonjs(),
                 babel({
@@ -55,7 +55,7 @@ function jscompiler(config) {
                             modules: false
                         }]
                     ]
-                }),
+                })
             ]
         }).then((bundle) => {
             global.rollupCache[fileName] = bundle.cache;
@@ -68,17 +68,17 @@ function jscompiler(config) {
             }).then(() => {
                 res(true);
             }).catch(error => {
-                console.error(error)
+                console.error(error);
                 rej(error);
             });
 
             return outPutFile;
 
         }).catch(error => {
-            console.log(error)
+            console.log(error);
             throw new Error(error);
-        })
-    })
+        });
+    });
 }
 
 module.exports = jscompiler;

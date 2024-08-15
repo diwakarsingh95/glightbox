@@ -4,6 +4,20 @@
   (global = global || self, global.GLightbox = factory());
 }(this, (function () { 'use strict';
 
+  function _classCallCheck(a, n) {
+    if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function");
+  }
+  function _defineProperties(e, r) {
+    for (var t = 0; t < r.length; t++) {
+      var o = r[t];
+      o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o);
+    }
+  }
+  function _createClass(e, r, t) {
+    return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", {
+      writable: !1
+    }), e;
+  }
   function _toPrimitive(t, r) {
     if ("object" != typeof t || !t) return t;
     var e = t[Symbol.toPrimitive];
@@ -26,28 +40,6 @@
     } : function (o) {
       return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
     }, _typeof(o);
-  }
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-  function _defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
-    }
-  }
-  function _createClass(Constructor, protoProps, staticProps) {
-    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) _defineProperties(Constructor, staticProps);
-    Object.defineProperty(Constructor, "prototype", {
-      writable: false
-    });
-    return Constructor;
   }
 
   var uid = Date.now();
@@ -300,7 +292,7 @@
       callback = config.callback,
       appendTo = config.appendTo;
     var iframe = document.createElement('iframe');
-    iframe.className = 'vimeo-video gvideo';
+    iframe.className = 'vimeo-media gmedia';
     iframe.src = url;
     iframe.style.width = '100%';
     iframe.style.height = '100%';
@@ -938,12 +930,12 @@
   function slideVideo(slide, data, index, callback) {
     var _this = this;
     var slideContainer = slide.querySelector('.ginner-container');
-    var videoID = 'gvideo' + index;
+    var videoID = 'gmedia' + index;
     var slideMedia = slide.querySelector('.gslide-media');
     var videoPlayers = this.getAllPlayers();
-    addClass(slideContainer, 'gvideo-container');
-    slideMedia.insertBefore(createHTML('<div class="gvideo-wrapper"></div>'), slideMedia.firstChild);
-    var videoWrapper = slide.querySelector('.gvideo-wrapper');
+    addClass(slideContainer, 'gmedia-container');
+    slideMedia.insertBefore(createHTML('<div class="gmedia-wrapper"></div>'), slideMedia.firstChild);
+    var videoWrapper = slide.querySelector('.gmedia-wrapper');
     injectAssets(this.settings.plyr.css, 'Plyr');
     var url = data.href;
     var provider = data === null || data === void 0 ? void 0 : data.videoProvider;
@@ -964,13 +956,13 @@
         html += 'x-webkit-airplay="allow" ';
         html += 'playsinline ';
         html += 'controls ';
-        html += 'class="gvideo-local">';
+        html += 'class="gmedia-local">';
         html += "<source src=\"".concat(url, "\">");
         html += '</video>';
         customPlaceholder = createHTML(html);
       }
       var placeholder = customPlaceholder ? customPlaceholder : createHTML("<div id=\"".concat(videoID, "\" data-plyr-provider=\"").concat(provider, "\" data-plyr-embed-id=\"").concat(url, "\"></div>"));
-      addClass(videoWrapper, "".concat(provider, "-video gvideo"));
+      addClass(videoWrapper, "".concat(provider, "-media gmedia"));
       videoWrapper.appendChild(placeholder);
       videoWrapper.setAttribute('data-id', videoID);
       videoWrapper.setAttribute('data-index', index);
@@ -992,6 +984,64 @@
     });
   }
   function handleMediaFullScreen(event) {
+    var media = closest(event.target, '.gslide-media');
+    if (event.type === 'enterfullscreen') {
+      addClass(media, 'fullscreen');
+    }
+    if (event.type === 'exitfullscreen') {
+      removeClass(media, 'fullscreen');
+    }
+  }
+
+  function slideAudio(slide, data, index, callback) {
+    var _this = this;
+    var slideContainer = slide.querySelector('.ginner-container');
+    var audioID = 'gmedia' + index;
+    var slideMedia = slide.querySelector('.gslide-media');
+    var audioPlayers = this.getAllPlayers();
+    addClass(slideContainer, 'gmedia-container');
+    slideMedia.insertBefore(createHTML('<div class="gmedia-wrapper"></div>'), slideMedia.firstChild);
+    var audioWrapper = slide.querySelector('.gmedia-wrapper');
+    injectAssets(this.settings.plyr.css, 'Plyr');
+    var url = data.href;
+    var provider = data === null || data === void 0 ? void 0 : data.audioProvider;
+    var customPlaceholder = false;
+    slideMedia.style.maxWidth = data.width;
+    injectAssets(this.settings.plyr.js, 'Plyr', function () {
+      provider = 'local';
+      var html = '<audio id="' + audioID + '" ';
+      html += "style=\"background:#000; max-width: ".concat(data.width, ";\" ");
+      html += 'preload="metadata" ';
+      html += 'x-webkit-airplay="allow" ';
+      html += 'playsinline ';
+      html += 'controls ';
+      html += 'class="gmedia-local">';
+      html += "<source src=\"".concat(url, "\">");
+      html += '</audio>';
+      customPlaceholder = createHTML(html);
+      var placeholder = customPlaceholder ? customPlaceholder : createHTML("<div id=\"".concat(audioID, "\" data-plyr-provider=\"").concat(provider, "\" data-plyr-embed-id=\"").concat(url, "\"></div>"));
+      addClass(audioWrapper, "".concat(provider, "-media gmedia"));
+      audioWrapper.appendChild(placeholder);
+      audioWrapper.setAttribute('data-id', audioID);
+      audioWrapper.setAttribute('data-index', index);
+      var playerConfig = has(_this.settings.plyr, 'config') ? _this.settings.plyr.config : {};
+      var player = new Plyr('#' + audioID, playerConfig);
+      player.on('ready', function (event) {
+        audioPlayers[audioID] = event.detail.plyr;
+        if (isFunction(callback)) {
+          callback();
+        }
+      });
+      waitUntil(function () {
+        return slide.querySelector('iframe') && slide.querySelector('iframe').dataset.ready == 'true';
+      }, function () {
+        _this.resize(slide);
+      });
+      player.on('enterfullscreen', handleMediaFullScreen$1);
+      player.on('exitfullscreen', handleMediaFullScreen$1);
+    });
+  }
+  function handleMediaFullScreen$1(event) {
     var media = closest(event.target, '.gslide-media');
     if (event.type === 'enterfullscreen') {
       addClass(media, 'fullscreen');
@@ -1075,6 +1125,7 @@
         title: '',
         type: '',
         videoProvider: '',
+        audioProvider: '',
         description: '',
         alt: '',
         descPosition: 'bottom',
@@ -1327,6 +1378,10 @@
         addClass(slide, 'loaded');
         if (type === 'video') {
           slideVideo.apply(this.instance, [slide, slideConfig, this.index, finalCallback]);
+          return;
+        }
+        if (type === 'audio') {
+          slideAudio.apply(this.instance, [slide, slideConfig, this.index, finalCallback]);
           return;
         }
         if (type === 'external') {
@@ -2037,7 +2092,7 @@
     instance.events['touch'] = touchInstance;
   }
 
-  var _version = '3.3.0';
+  var _version = '2.0.0';
   var isMobile$1 = isMobile();
   var isTouch$1 = isTouch();
   var html = document.getElementsByTagName('html')[0];
@@ -2558,7 +2613,7 @@
     }, {
       key: "getSlidePlayerInstance",
       value: function getSlidePlayerInstance(index) {
-        var id = 'gvideo' + index;
+        var id = 'gmedia' + index;
         var videoPlayers = this.getAllPlayers();
         if (has(videoPlayers, id) && videoPlayers[id]) {
           return videoPlayers[id];
@@ -2569,7 +2624,7 @@
       key: "stopSlideVideo",
       value: function stopSlideVideo(slide) {
         if (isNode(slide)) {
-          var node = slide.querySelector('.gvideo-wrapper');
+          var node = slide.querySelector('.gmedia-wrapper');
           if (node) {
             slide = node.getAttribute('data-index');
           }
@@ -2584,7 +2639,7 @@
       key: "slidePlayerPause",
       value: function slidePlayerPause(slide) {
         if (isNode(slide)) {
-          var node = slide.querySelector('.gvideo-wrapper');
+          var node = slide.querySelector('.gmedia-wrapper');
           if (node) {
             slide = node.getAttribute('data-index');
           }
@@ -2598,7 +2653,7 @@
       key: "playSlideVideo",
       value: function playSlideVideo(slide) {
         if (isNode(slide)) {
-          var node = slide.querySelector('.gvideo-wrapper');
+          var node = slide.querySelector('.gmedia-wrapper');
           if (node) {
             slide = node.getAttribute('data-index');
           }
@@ -2617,7 +2672,7 @@
           return;
         }
         if (isNode(slide)) {
-          var node = slide.querySelector('.gvideo-wrapper');
+          var node = slide.querySelector('.gmedia-wrapper');
           if (node) {
             slide = node.getAttribute('data-index');
           }
@@ -2852,7 +2907,7 @@
           return;
         }
         var winSize = windowSize();
-        var video = slide.querySelector('.gvideo-wrapper');
+        var video = slide.querySelector('.gmedia-wrapper');
         var image = slide.querySelector('.gslide-image');
         var description = this.slideDescription;
         var winWidth = winSize.width;

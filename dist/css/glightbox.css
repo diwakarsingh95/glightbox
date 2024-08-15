@@ -105,7 +105,7 @@
   height: 100vh;
 }
 
-.glightbox-container .ginner-container.gvideo-container {
+.glightbox-container .ginner-container.gmedia-container {
   width: 100%;
 }
 
@@ -196,7 +196,7 @@
   display: none;
 }
 
-.gslide-video .gvideo-wrapper {
+.gslide-video .gmedia-wrapper {
   width: 100%;
         /* max-width: 160vmin; */
   margin: auto;
@@ -511,7 +511,6 @@ iframe.wait-autoplay {
 .glightbox-clean .gslide-title {
   font-size: 1em;
   font-weight: normal;
-  font-family: arial;
   color: #000;
   margin-bottom: 19px;
   line-height: 1.4em;
@@ -520,7 +519,6 @@ iframe.wait-autoplay {
 .glightbox-clean .gslide-desc {
   font-size: 0.86em;
   margin-bottom: 0;
-  font-family: arial;
   line-height: 1.4em;
 }
 

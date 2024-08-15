@@ -5,16 +5,16 @@
     scrollerDesc.setup({
         element: _('.box-container').toArray(),
         offsetBottom: '20%',
-        once: true,
+        once: true
     }).onStepEnter(function(response) {
         var list = _(response.element).find('li');
         list.forEach(function(item, i) {
             var delay = i * 150 / 1000;
             item = _(item);
             item.attr('style', 'transition-delay: ' + delay + 's;');
-        })
+        });
 
-        list.addClass('show')
+        list.addClass('show');
     });
 
 
@@ -24,7 +24,7 @@
         var eleHeader = null;
         const classes = {
             pinned: 'header-pin',
-            unpinned: 'header-unpin',
+            unpinned: 'header-unpin'
         };
 
         function onScroll() {
@@ -59,8 +59,8 @@
         onScroll();
         window.onload = function() {
             document.addEventListener('scroll', onScroll, false);
-        }
-    }
+        };
+    };
     header();
 
 
@@ -71,17 +71,17 @@
         scrollerDesc.setup({
             element: _('.especifications ul').toArray(),
             bottom: '300',
-            once: true,
+            once: true
         }).onStepEnter(function(response) {
             var list = _(response.element).find('li');
             list.forEach(function(item, i) {
                 var delay = i * 100 / 1000;
                 item = _(item);
                 item.attr('style', 'transition-delay: ' + delay + 's;');
-            })
-            list.addClass('show')
+            });
+            list.addClass('show');
         });
-    }
+    };
     specifics();
 
 

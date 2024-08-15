@@ -10,15 +10,15 @@ import { has, closest, injectAssets, addClass, removeClass, createHTML, isFuncti
 
 export default function slideVideo(slide, data, index, callback) {
     const slideContainer = slide.querySelector('.ginner-container');
-    const videoID = 'gvideo' + index;
+    const videoID = 'gmedia' + index;
     const slideMedia = slide.querySelector('.gslide-media');
     const videoPlayers = this.getAllPlayers();
 
-    addClass(slideContainer, 'gvideo-container');
+    addClass(slideContainer, 'gmedia-container');
 
-    slideMedia.insertBefore(createHTML('<div class="gvideo-wrapper"></div>'), slideMedia.firstChild);
+    slideMedia.insertBefore(createHTML('<div class="gmedia-wrapper"></div>'), slideMedia.firstChild);
 
-    const videoWrapper = slide.querySelector('.gvideo-wrapper');
+    const videoWrapper = slide.querySelector('.gmedia-wrapper');
 
     injectAssets(this.settings.plyr.css, 'Plyr');
 
@@ -37,7 +37,10 @@ export default function slideVideo(slide, data, index, callback) {
         // Set youtube videos
         if (
             !provider &&
-            (url.match(/(youtube\.com|youtube-nocookie\.com)\/watch\?v=([a-zA-Z0-9\-_]+)/) || url.match(/youtu\.be\/([a-zA-Z0-9\-_]+)/) || url.match(/(youtube\.com|youtube-nocookie\.com)\/embed\/([a-zA-Z0-9\-_]+)/) || url.match(/(youtube\.com|youtube-nocookie\.com)\/shorts\/([a-zA-Z0-9\-_]+)/))
+            (url.match(/(youtube\.com|youtube-nocookie\.com)\/watch\?v=([a-zA-Z0-9\-_]+)/) ||
+                url.match(/youtu\.be\/([a-zA-Z0-9\-_]+)/) ||
+                url.match(/(youtube\.com|youtube-nocookie\.com)\/embed\/([a-zA-Z0-9\-_]+)/) ||
+                url.match(/(youtube\.com|youtube-nocookie\.com)\/shorts\/([a-zA-Z0-9\-_]+)/))
         ) {
             provider = 'youtube';
         }
@@ -52,7 +55,7 @@ export default function slideVideo(slide, data, index, callback) {
             html += 'x-webkit-airplay="allow" ';
             html += 'playsinline ';
             html += 'controls ';
-            html += 'class="gvideo-local">';
+            html += 'class="gmedia-local">';
             html += `<source src="${url}">`;
             html += '</video>';
             customPlaceholder = createHTML(html);
@@ -61,7 +64,7 @@ export default function slideVideo(slide, data, index, callback) {
         // prettier-ignore
         const placeholder = customPlaceholder ? customPlaceholder : createHTML(`<div id="${videoID}" data-plyr-provider="${provider}" data-plyr-embed-id="${url}"></div>`);
 
-        addClass(videoWrapper, `${provider}-video gvideo`);
+        addClass(videoWrapper, `${provider}-media gmedia`);
         videoWrapper.appendChild(placeholder);
         videoWrapper.setAttribute('data-id', videoID);
         videoWrapper.setAttribute('data-index', index);

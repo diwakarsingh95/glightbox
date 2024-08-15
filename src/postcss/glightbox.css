@@ -77,7 +77,7 @@
         margin: auto;
         height: 100vh;
 
-        &.gvideo-container {
+        &.gmedia-container {
             width: 100%;
         }
 
@@ -202,7 +202,7 @@
         }
     }
 
-    .gvideo-wrapper {
+    .gmedia-wrapper {
         width: 100%;
         /* max-width: 160vmin; */
         margin: auto;

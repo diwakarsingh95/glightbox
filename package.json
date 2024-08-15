@@ -1,12 +1,12 @@
 {
-  "name": "glightbox",
-  "version": "3.3.0",
+  "name": "glightbox-extended",
+  "version": "2.0.0",
   "description": "Pure Javascript lightbox",
   "main": "dist/js/glightbox.min.js",
   "scripts": {
     "watch": "node development/watcher.js"
   },
-  "author": "Biati Digital",
+  "author": "Diwakar",
   "types": "./index.d.ts",
   "keywords": [
     "lightbox",
@@ -15,12 +15,12 @@
     "popup"
   ],
   "license": "MIT",
-  "homepage": "https://biati-digital.github.io/glightbox/",
+  "homepage": "https://github.com/diwakarsingh95/glightbox",
   "repository": {
-    "url": "https://github.com/biati-digital/glightbox",
+    "url": "https://github.com/diwakarsingh95/glightbox",
     "type": "git"
   },
-  "bugs": "https://github.com/biati-digital/glightbox/issues",
+  "bugs": "https://github.com/diwakarsingh95/glightbox/issues",
   "devDependencies": {
     "@babel/cli": "^7.10.3",
     "@babel/core": "^7.10.3",

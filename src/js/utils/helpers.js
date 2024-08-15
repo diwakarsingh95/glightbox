@@ -332,7 +332,7 @@ export function whichTransitionEvent() {
 export function createIframe(config) {
     let { url, allow, callback, appendTo } = config;
     let iframe = document.createElement('iframe');
-    iframe.className = 'vimeo-video gvideo';
+    iframe.className = 'vimeo-media gmedia';
     iframe.src = url;
     iframe.style.width = '100%';
     iframe.style.height = '100%';

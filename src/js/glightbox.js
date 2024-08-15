@@ -10,7 +10,7 @@ import Slide from './core/slide.js';
 import touchNavigation from './core/touch-navigation.js';
 import * as _ from './utils/helpers.js';
 
-const version = '3.3.0';
+const version = '2.0.0';
 const isMobile = _.isMobile();
 const isTouch = _.isTouch();
 const html = document.getElementsByTagName('html')[0];
@@ -654,7 +654,7 @@ class GlightboxInit {
      * @return bool|object
      */
     getSlidePlayerInstance(index) {
-        const id = 'gvideo' + index;
+        const id = 'gmedia' + index;
         const videoPlayers = this.getAllPlayers();
 
         if (_.has(videoPlayers, id) && videoPlayers[id]) {
@@ -673,7 +673,7 @@ class GlightboxInit {
      */
     stopSlideVideo(slide) {
         if (_.isNode(slide)) {
-            let node = slide.querySelector('.gvideo-wrapper');
+            let node = slide.querySelector('.gmedia-wrapper');
             if (node) {
                 slide = node.getAttribute('data-index');
             }
@@ -693,7 +693,7 @@ class GlightboxInit {
      */
     slidePlayerPause(slide) {
         if (_.isNode(slide)) {
-            let node = slide.querySelector('.gvideo-wrapper');
+            let node = slide.querySelector('.gmedia-wrapper');
             if (node) {
                 slide = node.getAttribute('data-index');
             }
@@ -713,7 +713,7 @@ class GlightboxInit {
      */
     playSlideVideo(slide) {
         if (_.isNode(slide)) {
-            let node = slide.querySelector('.gvideo-wrapper');
+            let node = slide.querySelector('.gmedia-wrapper');
             if (node) {
                 slide = node.getAttribute('data-index');
             }
@@ -741,7 +741,7 @@ class GlightboxInit {
         }
 
         if (_.isNode(slide)) {
-            let node = slide.querySelector('.gvideo-wrapper');
+            let node = slide.querySelector('.gmedia-wrapper');
             if (node) {
                 slide = node.getAttribute('data-index');
             }
@@ -1055,7 +1055,7 @@ class GlightboxInit {
         }
 
         const winSize = _.windowSize();
-        const video = slide.querySelector('.gvideo-wrapper');
+        const video = slide.querySelector('.gmedia-wrapper');
         const image = slide.querySelector('.gslide-image');
         const description = this.slideDescription;
 

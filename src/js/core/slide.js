@@ -8,6 +8,7 @@ import ZoomImages from './zoom.js';
 import DragSlides from './drag.js';
 import slideImage from '../slides/image.js';
 import slideVideo from '../slides/video.js';
+import slideAudio from '../slides/audio.js';
 import slideInline from '../slides/inline.js';
 import slideIframe from '../slides/iframe.js';
 import SlideConfigParser from './slide-parser.js';
@@ -101,6 +102,11 @@ export default class Slide {
 
         if (type === 'video') {
             slideVideo.apply(this.instance, [slide, slideConfig, this.index, finalCallback]);
+            return;
+        }
+
+        if (type === 'audio') {
+            slideAudio.apply(this.instance, [slide, slideConfig, this.index, finalCallback]);
             return;
         }
 

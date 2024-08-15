@@ -63,7 +63,7 @@ async function createFolder() {
             '!.DS_Store'
         ]
     });
-    notify('Created folder', `Created folder correctly`);
+    notify('Created folder', 'Created folder correctly');
 
     const zip = await createZip(tmpfolder).catch((error) => {
         jetpack.remove(tmpfolder);
@@ -73,7 +73,7 @@ async function createFolder() {
     jetpack.remove(tmpfolder);
     jetpack.move(zip, path.join(folder, folderName + '-master.zip'));
 
-    notify('Done', `Packaging process ended correctly`);
+    notify('Done', 'Packaging process ended correctly');
 }
 createFolder();
 
@@ -84,11 +84,11 @@ async function createZip(folder) {
         const archive = archiver('zip', { zlib: { level: 9 } });
 
         output.on('close', () => {
-            notify('Zipped', `zip archive was created correctly`);
+            notify('Zipped', 'zip archive was created correctly');
             resolve(name);
         });
         archive.on('error', (err) => {
-            notify('Package Error', `The was an error creating the zip.`);
+            notify('Package Error', 'The was an error creating the zip.');
             reject(err);
         });
 

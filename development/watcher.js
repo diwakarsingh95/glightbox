@@ -9,11 +9,11 @@ const terser = require('terser');
 let config = {
     js: {
         src: 'src/js',
-        dest: 'dist/js',
+        dest: 'dist/js'
     },
     css: {
         src: 'src/postcss',
-        dest: 'dist/css',
+        dest: 'dist/css'
     }
 };
 
@@ -38,8 +38,8 @@ async function handleJavascript(file) {
     }).catch(error => console.log(error));
 
     if (!res) {
-        notify('Build Error', `View logs for more info`);
-        console.log(res)
+        notify('Build Error', 'View logs for more info');
+        console.log(res);
         return false;
     }
 
@@ -90,7 +90,7 @@ function filesWatcher() {
         awaitWriteFinish: {
             stabilityThreshold: 500,
             pollInterval: 500
-        },
+        }
     });
 
     watcher.on('change', path => {
@@ -100,7 +100,7 @@ function filesWatcher() {
         if (path.endsWith('.css')) {
             return handlePostCSS(path);
         }
-    })
-    watcher.on('ready', () => notify('Watching files', 'Initial scan complete. Ready for changes'))
+    });
+    watcher.on('ready', () => notify('Watching files', 'Initial scan complete. Ready for changes'));
 }
 filesWatcher();
