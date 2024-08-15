@@ -18,7 +18,8 @@ export default class SlideConfigParser {
             height: '',
             content: false,
             zoomable: true,
-            draggable: true
+            draggable: true,
+            download: ''
         };
 
         if (isObject(slideParamas)) {

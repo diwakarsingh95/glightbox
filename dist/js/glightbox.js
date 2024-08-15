@@ -4,6 +4,14 @@
   (global = global || self, global.GLightbox = factory());
 }(this, (function () { 'use strict';
 
+  function _arrayLikeToArray(r, a) {
+    (null == a || a > r.length) && (a = r.length);
+    for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
+    return n;
+  }
+  function _arrayWithoutHoles(r) {
+    if (Array.isArray(r)) return _arrayLikeToArray(r);
+  }
   function _classCallCheck(a, n) {
     if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function");
   }
@@ -17,6 +25,44 @@
     return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", {
       writable: !1
     }), e;
+  }
+  function _defineProperty(e, r, t) {
+    return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
+      value: t,
+      enumerable: !0,
+      configurable: !0,
+      writable: !0
+    }) : e[r] = t, e;
+  }
+  function _iterableToArray(r) {
+    if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r);
+  }
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+  function ownKeys(e, r) {
+    var t = Object.keys(e);
+    if (Object.getOwnPropertySymbols) {
+      var o = Object.getOwnPropertySymbols(e);
+      r && (o = o.filter(function (r) {
+        return Object.getOwnPropertyDescriptor(e, r).enumerable;
+      })), t.push.apply(t, o);
+    }
+    return t;
+  }
+  function _objectSpread2(e) {
+    for (var r = 1; r < arguments.length; r++) {
+      var t = null != arguments[r] ? arguments[r] : {};
+      r % 2 ? ownKeys(Object(t), !0).forEach(function (r) {
+        _defineProperty(e, r, t[r]);
+      }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
+        Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
+      });
+    }
+    return e;
+  }
+  function _toConsumableArray(r) {
+    return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread();
   }
   function _toPrimitive(t, r) {
     if ("object" != typeof t || !t) return t;
@@ -40,6 +86,13 @@
     } : function (o) {
       return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
     }, _typeof(o);
+  }
+  function _unsupportedIterableToArray(r, a) {
+    if (r) {
+      if ("string" == typeof r) return _arrayLikeToArray(r, a);
+      var t = {}.toString.call(r).slice(8, -1);
+      return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0;
+    }
   }
 
   var uid = Date.now();
@@ -927,6 +980,7 @@
     return;
   }
 
+  var defaultConstols = ['play-large', 'play', 'fast-forward', 'progress', 'current-time', 'duration', 'mute', 'restart', 'rewind', 'volume', 'settings', 'captions', 'pip', 'airplay', 'fullscreen'];
   function slideVideo(slide, data, index, callback) {
     var _this = this;
     var slideContainer = slide.querySelector('.ginner-container');
@@ -967,6 +1021,24 @@
       videoWrapper.setAttribute('data-id', videoID);
       videoWrapper.setAttribute('data-index', index);
       var playerConfig = has(_this.settings.plyr, 'config') ? _this.settings.plyr.config : {};
+      if (provider === 'local' && has(data, 'download') && data.download) {
+        if (isString(data.download)) {
+          playerConfig = _objectSpread2(_objectSpread2({}, playerConfig), {}, {
+            urls: {
+              download: data.download
+            }
+          });
+        }
+        if (has(playerConfig, 'controls') && isArray(playerConfig.controls)) {
+          playerConfig = _objectSpread2(_objectSpread2({}, playerConfig), {}, {
+            controls: [].concat(_toConsumableArray(playerConfig.controls), ['download'])
+          });
+        } else {
+          playerConfig = _objectSpread2(_objectSpread2({}, playerConfig), {}, {
+            controls: [].concat(defaultConstols, ['download'])
+          });
+        }
+      }
       var player = new Plyr('#' + videoID, playerConfig);
       player.on('ready', function (event) {
         videoPlayers[videoID] = event.detail.plyr;
@@ -993,6 +1065,7 @@
     }
   }
 
+  var defaultConstols$1 = ['play-large', 'play', 'fast-forward', 'progress', 'current-time', 'duration', 'mute', 'restart', 'rewind', 'volume', 'settings', 'captions', 'pip', 'airplay', 'fullscreen'];
   function slideAudio(slide, data, index, callback) {
     var _this = this;
     var slideContainer = slide.querySelector('.ginner-container');
@@ -1025,6 +1098,24 @@
       audioWrapper.setAttribute('data-id', audioID);
       audioWrapper.setAttribute('data-index', index);
       var playerConfig = has(_this.settings.plyr, 'config') ? _this.settings.plyr.config : {};
+      if (has(data, 'download') && data.download) {
+        if (isString(data.download)) {
+          playerConfig = _objectSpread2(_objectSpread2({}, playerConfig), {}, {
+            urls: {
+              download: data.download
+            }
+          });
+        }
+        if (has(playerConfig, 'controls') && isArray(playerConfig.controls)) {
+          playerConfig = _objectSpread2(_objectSpread2({}, playerConfig), {}, {
+            controls: [].concat(_toConsumableArray(playerConfig.controls), ['download'])
+          });
+        } else {
+          playerConfig = _objectSpread2(_objectSpread2({}, playerConfig), {}, {
+            controls: [].concat(defaultConstols$1, ['download'])
+          });
+        }
+      }
       var player = new Plyr('#' + audioID, playerConfig);
       player.on('ready', function (event) {
         audioPlayers[audioID] = event.detail.plyr;
@@ -1134,7 +1225,8 @@
         height: '',
         content: false,
         zoomable: true,
-        draggable: true
+        draggable: true,
+        download: ''
       };
       if (isObject(slideParamas)) {
         this.defaults = extend(this.defaults, slideParamas);
@@ -2092,7 +2184,7 @@
     instance.events['touch'] = touchInstance;
   }
 
-  var _version = '2.0.0';
+  var _version = '2.1.0';
   var isMobile$1 = isMobile();
   var isTouch$1 = isTouch();
   var html = document.getElementsByTagName('html')[0];

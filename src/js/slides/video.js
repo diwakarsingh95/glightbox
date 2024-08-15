@@ -6,7 +6,9 @@
  * @param {int} index
  * @param {function} callback
  */
-import { has, closest, injectAssets, addClass, removeClass, createHTML, isFunction, waitUntil } from '../utils/helpers.js';
+import { has, closest, injectAssets, addClass, removeClass, createHTML, isFunction, waitUntil, isString, isArray } from '../utils/helpers.js';
+
+const defaultConstols = ['play-large', 'play', 'fast-forward', 'progress', 'current-time', 'duration', 'mute', 'restart', 'rewind', 'volume', 'settings', 'captions', 'pip', 'airplay', 'fullscreen'];
 
 export default function slideVideo(slide, data, index, callback) {
     const slideContainer = slide.querySelector('.ginner-container');
@@ -69,7 +71,17 @@ export default function slideVideo(slide, data, index, callback) {
         videoWrapper.setAttribute('data-id', videoID);
         videoWrapper.setAttribute('data-index', index);
 
-        const playerConfig = has(this.settings.plyr, 'config') ? this.settings.plyr.config : {};
+        let playerConfig = has(this.settings.plyr, 'config') ? this.settings.plyr.config : {};
+        if (provider === 'local' && has(data, 'download') && data.download) {
+            if (isString(data.download)) {
+                playerConfig = { ...playerConfig, urls: { download: data.download } };
+            }
+            if (has(playerConfig, 'controls') && isArray(playerConfig.controls)) {
+                playerConfig = { ...playerConfig, controls: [...playerConfig.controls, 'download'] };
+            } else {
+                playerConfig = { ...playerConfig, controls: [...defaultConstols, 'download'] };
+            }
+        }
         const player = new Plyr('#' + videoID, playerConfig);
 
         player.on('ready', (event) => {
